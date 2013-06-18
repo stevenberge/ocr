@@ -164,7 +164,7 @@ public class fingerPaint extends GraphicsActivity{
 	////////////////////
 	//鍙戦�
 	private int port = 8888;   
-	private String ipAdd = "219.223.194.252";//"10.254.146.245";//"10.7.77.173";//
+	private String ipAdd = "219.223.194.146"; //252" //"10.254.146.245";//"10.7.77.173";//
 	private void showAns(String s){
 //		 LayoutInflater mLayoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //	     final ViewGroup menuView = (ViewGroup) mLayoutInflater.inflate(, null, true);
@@ -172,13 +172,16 @@ public class fingerPaint extends GraphicsActivity{
 //	     mPopupWindow.setBackgroundDrawable(new BitmapDrawable()); 
 //	     mPopupWindow.setOutsideTouchable(true);
 //	     mPopupWindow.setFocusable(true);
+		AnswerDialog(s).show();
 	}
 	Handler mHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			switch (msg.arg1) {
 			case 0:
 				String s = (String) msg.obj;
-				if (s != null)  Log.i("mhandler.handlemessage",s);
+				if (s != null) { Log.i("mhandler.handlemessage",s);
+					showAns(s);
+				}
 				//Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
 //				Toast toast = Toast.makeText(getApplicationContext(),
 //						"recv the answer:"+s, Toast.LENGTH_LONG);
@@ -219,6 +222,25 @@ public class fingerPaint extends GraphicsActivity{
 		TCPThread t = new TCPThread(ipAdd, port, mHandler, bits);
 		new Thread(t).start();
 	} 
+	
+	private AlertDialog.Builder AnswerDialog(String s) {
+		AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+		alert.setTitle("answer");
+		alert.setMessage(""+s);
+
+		// Set an EditText view to get user input 
+		//final EditText input = new EditText(this);
+		//alert.setView(input);
+
+		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+//				String value = input.getText().toString();
+//				ipAdd = value;
+			}
+		});
+		return alert;
+	}
 	///////////////////////////////
 	////璁剧疆鍙戦�IP
 	private AlertDialog.Builder setIPDialog() {
